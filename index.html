@@ -71,7 +71,8 @@
             const navItems = [
                 { label: 'About', id: 'education' },
                 { label: 'Projects', id: 'projects' },
-                { label: 'Contact', id: 'contact' }
+                { label: 'Contact', id: 'contact' },
+                { label: 'Insights', id: 'insights' }
             ];
 
             useEffect(() => {
@@ -109,7 +110,7 @@
             const education = [
                 {
                     degree: "Master's in Management (Grande Ecole)",
-                    institution: "Emlyon Business School",
+                    institution: "emlyon Business School",
                     location: "Lyon, France",
                     year: "Sept 2025 - Present",
                     description: "Two-year programme specializing in global business strategy and organizational leadership."
@@ -169,7 +170,11 @@
                             </div>
                             <div className="flex space-x-6">
                                 {navItems.map(item => (
-                                    <button key={item.id} onClick={() => scrollTo(item.id)} className={`text-xs uppercase tracking-[0.2em] text-white relative transition-opacity ${activeSection === item.id ? 'font-bold opacity-100' : 'opacity-70 hover:opacity-100'}`}>
+                                    <button 
+                                        key={item.id} 
+                                        onClick={() => item.id === 'insights' ? window.location.href = 'insights.html' : scrollTo(item.id)} 
+                                        className={`text-xs uppercase tracking-[0.2em] text-white relative transition-opacity ${activeSection === item.id ? 'font-bold opacity-100' : 'opacity-70 hover:opacity-100'}`}
+                                    >
                                         {item.label}
                                         {activeSection === item.id && <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-[#8D7B68]"></span>}
                                     </button>
