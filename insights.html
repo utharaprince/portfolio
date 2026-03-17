@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insights & Perspectives | Uthara Prince</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React and Babel for browser-side JSX compilation -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Public+Sans:wght@300;400;700&display=swap');
+        
+        body { 
+            font-family: 'Public Sans', sans-serif; 
+            background-color: #F5F2ED;
+            color: #2D241E;
+        }
+
+        h1, h2, h3, h4, .nav-brand {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Custom scrollbar for espresso theme */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #F5F2ED; }
+        ::-webkit-scrollbar-thumb { background: #8D7B68; }
+
+        .shimmer {
+            background: linear-gradient(90deg, #3D3028 25%, #4D4038 50%, #3D3028 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const Icon = ({ name, size = 24, className = "" }) => {
+            useEffect(() => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }, [name]);
+            return <i data-lucide={name} style={{ width: size, height: size }} className={className}></i>;
+        };
+
+        const App = () => {
+            const categories = ['Travel', 'Tech', 'Reading', 'Photography'];
+            const [activeCategory, setActiveCategory] = useState('Travel');
+            const [selectedArticle, setSelectedArticle] = useState(null);
+
+            const articles = [
+                {
+                    id: 1,
+                    category: 'Travel',
+                    title: 'The Cobbled Streets of Lyon',
+                    date: 'Drafting...',
+                    readTime: '5 min read',
+                    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                    status: 'In Progress'
+                },
+                {
+                    id: 2,
+                    category: 'Tech',
+                    title: 'Consectetur Adipiscing Elit Sed Do',
+                    date: 'Drafting...',
+                    readTime: 'TBD',
+                    summary: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
+                    status: 'In Progress'
+                },
+                {
+                    id: 3,
+                    category: 'Reading',
+                    title: 'Eiusmod Tempor Incididunt Ut Labore',
+                    date: 'Drafting...',
+                    readTime: 'TBD',
+                    summary: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+                    status: 'In Progress'
+                },
+                {
+                    id: 4,
+                    category: 'Photography',
+                    title: 'Magna Aliqua Ut Enim Ad Minim',
+                    date: 'Drafting...',
+                    readTime: 'TBD',
+                    summary: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+                    status: 'In Progress'
+                },
+                {
+                    id: 5,
+                    category: 'Travel',
+                    title: 'Quis Nostrud Exercitation Ullamco',
+                    date: 'Drafting...',
+                    readTime: 'TBD',
+                    summary: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
+                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+                    status: 'In Progress'
+                },
+                {
+                    id: 6,
+                    category: 'Tech',
+                    title: 'Laboris Nisi Ut Aliquip Ex Ea',
+                    date: 'Drafting...',
+                    readTime: 'TBD',
+                    summary: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.',
+                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+                    status: 'In Progress'
+                }
+            ];
+
+            const filteredArticles = articles.filter(article => article.category === activeCategory);
+
+            const handleArticleClick = (article) => {
+                setSelectedArticle(article);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            return (
+                <div className="min-h-screen bg-[#F5F2ED] text-[#2D241E] flex flex-col">
+                    {/* Minimal Nav */}
+                    <nav className="fixed top-0 w-full z-50 bg-[#3D3028] py-4 shadow-lg">
+                        <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
+                            <div className="flex items-center gap-3 cursor-pointer" onClick={() => {
+                                if (selectedArticle) setSelectedArticle(null);
+                                else window.location.href = 'index.html';
+                            }}>
+                                <div className="nav-brand w-8 h-8 bg-white/10 border border-white/20 rounded flex items-center justify-center font-bold text-white italic">UP</div>
+                            </div>
+                            <button 
+                                onClick={() => selectedArticle ? setSelectedArticle(null) : window.location.href = 'index.html'} 
+                                className="text-[10px] uppercase tracking-[0.2em] text-white/70 hover:text-white flex items-center gap-2 transition-colors"
+                            >
+                                <Icon name={selectedArticle ? "chevron-left" : "arrow-left"} size={14} /> 
+                                {selectedArticle ? "Back to Insights" : "Back to Portfolio"}
+                            </button>
+                        </div>
+                    </nav>
+
+                    <main className="pt-40 pb-24 px-6 max-w-5xl mx-auto w-full flex-grow">
+                        {!selectedArticle ? (
+                            <div className="fade-in">
+                                {/* Header Section */}
+                                <header className="space-y-6 mb-16">
+                                    <h1 className="text-6xl md:text-7xl font-bold text-[#3D3028] leading-tight">
+                                        INSIGHTS <br /> 
+                                        <span className="italic font-light text-[#8D7B68]">AND PERSPECTIVES</span>
+                                    </h1>
+                                    <div className="w-24 h-1 bg-[#8D7B68] mt-8"></div>
+                                </header>
+
+                                {/* Category Filter */}
+                                <div className="flex flex-wrap gap-3 mb-12">
+                                    {categories.map(cat => (
+                                        <button
+                                            key={cat}
+                                            onClick={() => setActiveCategory(cat)}
+                                            className={`px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${
+                                                activeCategory === cat 
+                                                ? 'bg-[#3D3028] text-white border-[#3D3028]' 
+                                                : 'bg-white text-[#3D3028] border-[#3D3028]/10 hover:border-[#8D7B68]'
+                                            }`}
+                                        >
+                                            {cat}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* Articles Grid */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    {filteredArticles.length > 0 ? (
+                                        filteredArticles.map(article => (
+                                            <article 
+                                                key={article.id} 
+                                                onClick={() => handleArticleClick(article)}
+                                                className="group bg-white p-10 rounded-3xl border border-[#3D3028]/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 flex flex-col cursor-pointer"
+                                            >
+                                                <div className="flex justify-between items-center mb-6">
+                                                    <span className="text-[9px] font-bold tracking-[0.3em] text-[#8D7B68] uppercase">{article.category}</span>
+                                                    <span className="text-[8px] font-bold tracking-[0.2em] bg-[#8D7B68]/10 text-[#8D7B68] px-3 py-1.5 rounded-full uppercase">
+                                                        {article.status}
+                                                    </span>
+                                                </div>
+                                                <h2 className="text-2xl font-bold text-[#3D3028] mb-4 leading-tight group-hover:text-[#8D7B68] transition-colors">
+                                                    {article.title}
+                                                </h2>
+                                                <p className="text-[#2D241E]/40 text-sm font-light leading-relaxed mb-8 flex-grow">
+                                                    {article.summary}
+                                                </p>
+                                                <div className="flex justify-between items-center pt-6 border-t border-[#3D3028]/5">
+                                                    <span className="text-[10px] font-bold text-[#2D241E]/20 uppercase tracking-widest italic">{article.date}</span>
+                                                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#3D3028]">View Full Article</div>
+                                                </div>
+                                            </article>
+                                        ))
+                                    ) : (
+                                        <div className="col-span-full py-20 text-center">
+                                            <p className="text-[#8D7B68] italic tracking-wide">No insights found in this category yet.</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        ) : (
+                            /* Detailed Article View */
+                            <div className="fade-in max-w-3xl mx-auto">
+                                <header className="space-y-6 mb-12">
+                                    <div className="flex items-center gap-4">
+                                        <span className="text-[10px] font-bold tracking-[0.3em] text-[#8D7B68] uppercase border-b border-[#8D7B68]/30 pb-1">{selectedArticle.category}</span>
+                                        <span className="text-[10px] text-[#2D241E]/40 uppercase tracking-widest">{selectedArticle.date}</span>
+                                    </div>
+                                    <h1 className="text-5xl md:text-6xl font-bold text-[#3D3028] leading-tight">{selectedArticle.title}</h1>
+                                    <div className="flex items-center gap-2 text-[#2D241E]/40 text-[10px] font-bold uppercase tracking-widest">
+                                        <Icon name="clock" size={12} /> {selectedArticle.readTime}
+                                    </div>
+                                </header>
+                                
+                                <div className="prose prose-espresso max-w-none">
+                                    <p className="text-xl text-[#2D241E]/80 leading-relaxed font-light mb-8 italic">
+                                        {selectedArticle.summary}
+                                    </p>
+                                    <div className="text-[#2D241E]/70 leading-loose text-lg space-y-6">
+                                        {selectedArticle.content.split('\n').map((para, i) => (
+                                            <p key={i}>{para}</p>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="mt-20 pt-10 border-t border-[#3D3028]/10 flex justify-between items-center">
+                                    <button 
+                                        onClick={() => setSelectedArticle(null)}
+                                        className="bg-[#3D3028] text-white px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#2D241E] transition-colors"
+                                    >
+                                        Back to All Insights
+                                    </button>
+                                    <div className="flex gap-4">
+                                        <button className="w-10 h-10 rounded-full bg-white border border-[#3D3028]/10 flex items-center justify-center text-[#3D3028] hover:bg-[#F5F2ED] transition-colors">
+                                            <Icon name="share-2" size={16} />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </main>
+
+                    <footer className="py-16 bg-[#1A1512] text-white/50 text-center mt-auto">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.5em]">Uthara Prince &bull; Insights &bull; 2026</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
